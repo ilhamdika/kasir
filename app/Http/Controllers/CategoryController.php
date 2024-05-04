@@ -13,7 +13,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        echo "Category Controller";
+        return view('category.index');
     }
 
     /**
@@ -23,7 +23,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('category.create');
     }
 
     /**
@@ -34,7 +34,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $request->all();
     }
 
     /**
