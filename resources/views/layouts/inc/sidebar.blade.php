@@ -26,7 +26,7 @@
                     'icon'=>'fas fa-shoe-prints',
                     'active'=>['log']
                     ]" />
-                <x-nav-item href="{{ route('category.index.') }}" :title="[
+                <x-nav-item href="{{ route('category.index') }}" :title="[
                     'name'=>'Category',
                     'icon'=>'fas fa-list',
                     'active'=>['log']
