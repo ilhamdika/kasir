@@ -8,14 +8,14 @@
         <div class="col-md-6">
             <form class="card card-primary" action="{{ route('category.store') }}" method="POST"
                 enctype="multipart/form-data">
+                @csrf
                 <div class="card-header">
                     <h5 class="card-title">Tambah Category</h5>
                 </div>
                 <div class="card-body">
-                    @csrf
                     <x-group>
                         <label>Nama Category</label>
-                        <x-input name="nama_sategory" />
+                        <x-input name="nama_kategori" />
                     </x-group>
                 </div>
                 <div class="card-footer">

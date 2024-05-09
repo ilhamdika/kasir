@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
@@ -34,7 +35,16 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        return $request->all();
+        $request->validate([
+            'nama_kategori' => 'required|min:4',
+        ]);
+
+        Category::create([
+            'nama_kategori' => $request->nama_kategori,
+            'status' => 'aktif',
+        ]);
+
+        return redirect()->route('category.index')->with('success', 'Data berhasil ditambahkan');
     }
 
     /**
