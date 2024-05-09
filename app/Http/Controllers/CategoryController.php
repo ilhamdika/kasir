@@ -12,9 +12,22 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('category.index');
+        $search = $request->search;
+
+        $data = Category::select('id', 'nama_kategori', 'status')
+            ->when($search, function ($q, $search) {
+                return $q->where('nama_kategori', 'like', "%{$search}%");
+            })
+            ->orderBy('nama_kategori')
+            ->paginate(50);
+        $data->map(function ($row) {
+            return $row;
+        });
+        return view('category.index',[
+            'data' => $data,
+        ]);
     }
 
     /**
@@ -66,7 +79,10 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = Category::findOrFail($id);
+        return view('category.edit', [
+            'data' => $data,
+        ]);
     }
 
     /**
@@ -78,7 +94,15 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nama_kategori' => 'required|min:4',
+        ]);
+
+        Category::findOrFail($id)->update([
+            'nama_kategori' => $request->nama_kategori,
+        ]);
+
+        return redirect()->route('category.index')->with('success', 'Data berhasil diubah');
     }
 
     /**
