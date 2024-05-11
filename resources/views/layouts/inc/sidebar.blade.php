@@ -29,7 +29,7 @@
                 <x-nav-item href="{{ route('category.index') }}" :title="[
                     'name'=>'Category',
                     'icon'=>'fas fa-list',
-                    'active'=>['log']
+                    'active'=>['category.index', 'category.create', 'category.edit']
                     ]" />
                 @endcan
                 @can('manajer')

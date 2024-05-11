@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
@@ -11,9 +12,23 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        echo "Category Controller";
+        $search = $request->search;
+
+        $data = Category::select('id', 'nama_kategori', 'status')
+            ->when($search, function ($q, $search) {
+                return $q->where('nama_kategori', 'like', "%{$search}%");
+            })
+            ->orderBy('status')
+            ->orderBy('nama_kategori')
+            ->paginate(50);
+        $data->map(function ($row) {
+            return $row;
+        });
+        return view('category.index',[
+            'data' => $data,
+        ]);
     }
 
     /**
@@ -23,7 +38,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('category.create');
     }
 
     /**
@@ -34,7 +49,16 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_kategori' => 'required|min:4',
+        ]);
+
+        Category::create([
+            'nama_kategori' => $request->nama_kategori,
+            'status' => 'aktif',
+        ]);
+
+        return redirect()->route('category.index')->with('success', 'Data berhasil ditambahkan');
     }
 
     /**
@@ -56,7 +80,10 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = Category::findOrFail($id);
+        return view('category.edit', [
+            'data' => $data,
+        ]);
     }
 
     /**
@@ -68,7 +95,15 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nama_kategori' => 'required|min:4',
+        ]);
+
+        Category::findOrFail($id)->update([
+            'nama_kategori' => $request->nama_kategori,
+        ]);
+
+        return redirect()->route('category.index')->with('success', 'Data berhasil diubah');
     }
 
     /**
@@ -80,5 +115,27 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function nonaktif()
+    {
+        $id = $_POST['id'];
+        Category::findOrFail($id)->update([
+            'status' => 'nonaktif',
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        echo json_encode('success');
+    }
+
+    public function aktif()
+    {
+        $id = $_POST['id'];
+        Category::findOrfail($id)->update([
+            'status' => 'aktif',
+            'update_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        echo json_encode('success');
     }
 }
