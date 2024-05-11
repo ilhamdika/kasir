@@ -34,6 +34,8 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['can:role,"admin","manajer"'])->group(function () {
         Route::get('log', [LogActivityController::class, 'index'])->name('log');
         Route::resource('category', CategoryController::class);
+        Route::post('category/nonaktif', [CategoryController::class, 'nonaktif'])->name('category.nonaktif');
+        Route::post('category/aktif', [CategoryController::class, 'aktif'])->name('category.aktif');
     });
     Route::middleware(['can:admin'])->group(function () {
         Route::delete('log', [LogActivityController::class, 'clear'])->name('log.clear');

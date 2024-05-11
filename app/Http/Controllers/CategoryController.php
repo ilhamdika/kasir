@@ -20,6 +20,7 @@ class CategoryController extends Controller
             ->when($search, function ($q, $search) {
                 return $q->where('nama_kategori', 'like', "%{$search}%");
             })
+            ->orderBy('status')
             ->orderBy('nama_kategori')
             ->paginate(50);
         $data->map(function ($row) {
@@ -114,5 +115,27 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function nonaktif()
+    {
+        $id = $_POST['id'];
+        Category::findOrFail($id)->update([
+            'status' => 'nonaktif',
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        echo json_encode('success');
+    }
+
+    public function aktif()
+    {
+        $id = $_POST['id'];
+        Category::findOrfail($id)->update([
+            'status' => 'aktif',
+            'update_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        echo json_encode('success');
     }
 }
