@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Menu;
 use Image;
 use Illuminate\Http\Request;
+use App\Models\Category; 
 
 class MenuController extends Controller
 {
@@ -38,7 +39,12 @@ class MenuController extends Controller
      */
     public function create()
     {
-        return view('menu.create');
+        $data = Category::select('id', 'nama_kategori')
+            ->where('status', 'aktif')
+            ->get();
+        return view('menu.create', [
+            'kategori' => $data
+        ]);
     }
 
     /**
@@ -54,7 +60,6 @@ class MenuController extends Controller
             'harga' => 'required|numeric',
             'harga' => 'required|numeric',
             'file_foto' => 'required|image|max:2000',
-            'kategori' => 'required|in:makanan,minuman'
         ]);
 
         $folder = 'images';
@@ -94,8 +99,12 @@ class MenuController extends Controller
     public function edit(Menu $menu)
     {
         $menu->foto = asset("images/{$menu->foto}");
+        $kategori = Category::select('id', 'nama_kategori')
+            ->where('status', 'aktif')
+            ->get();
         return view('menu.edit', [
-            'row' => $menu
+            'row' => $menu,
+            'kategori' => $kategori
         ]);
     }
 
@@ -113,7 +122,6 @@ class MenuController extends Controller
             'harga' => 'required|numeric',
             'file_foto' => 'nullable|image|max:2000',
             'stok' => 'required|numeric',
-            'kategori' => 'required|in:makanan,minuman'
         ]);
         if ($request->file_foto) {
 
