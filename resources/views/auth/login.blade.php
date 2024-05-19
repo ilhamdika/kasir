@@ -2,6 +2,12 @@
 @section('content')
 
 <style>
+    .login-page{
+        background: url('/assets/bg-login.jpg') no-repeat center center;
+        background-size: cover;
+        height: 100vh;
+        width: 100vw; 
+    }
     .cardLogin{
         width: 350px;
         margin: 0 auto;
