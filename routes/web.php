@@ -41,7 +41,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('log', [LogActivityController::class, 'clear'])->name('log.clear');
         Route::resource('user', UserController::class);
     });
-    Route::middleware(['can:manajer'])->group(function () {
+    Route::middleware(['can:role, "manajer", "admin"'])->group(function () {
         Route::resource('menu', MenuController::class);
         Route::get('laporan', [LaporanController::class, 'index'])->name('laporan.index');
         Route::post('laporan/harian', [LaporanController::class, 'laporanHarian'])->name('laporan.harian');

@@ -25,7 +25,8 @@
             </div>
         </div>
         <div class="card-body p-0">
-            <x-table-list>
+            <table class="table table-sm">
+            <caption>List of users</caption>
                 <thead>
                     <tr>
                         <th>NO</th>
@@ -58,7 +59,7 @@
                     </tr>
                     @endforelse
                 </tbody>
-            </x-table-list>
+            </table>
         </div>
         <div class="card-footer">
             {{ $data->appends(['search'=>request()->search])->links('page') }}

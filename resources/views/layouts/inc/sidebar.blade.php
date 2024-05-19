@@ -68,7 +68,7 @@
                     'active'=>['cart.index']
                     ]" />
                 @endcan
-                @can('manajer')
+                @can('role', ['admin','manajer'])
                 <x-nav-item href="{{ route('laporan.index') }}" :title="[
                     'name'=>'Laporan',
                     'icon'=>'fas fa-clipboard',
